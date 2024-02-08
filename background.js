@@ -12,10 +12,27 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     } else if (request.command === "stopRecording") {
         isRecording = false;
         sendResponse({status: "Recording stopped"});
+
+    } else if (request.command === "clearData") {
+        clearData();
+        // no need to send a response?
+        sendResponse({status: "Recording stopped"});
+
     } else if (request.command === "getData") {
         sendResponse(requestCounts);
     }
 });
+
+
+
+function clearData() {
+    // Clear the data
+    let requestCounts = {};
+    // Update the DOM just in-case the user click stopped recording
+}
+
+
+
 
 chrome.webRequest.onBeforeRequest.addListener(
     function(details) {
@@ -68,6 +85,8 @@ chrome.webRequest.onBeforeRequest.addListener(
     {urls: ["<all_urls>"]},
     ["requestBody"]
 );
+
+
 
 
 // Example: Function to send data to popup.js, assuming the popup is open
