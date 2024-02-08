@@ -120,6 +120,23 @@ document.getElementById('startRecording').addEventListener('click', function() {
     // update the DOM
     var scopeSpan = document.getElementById('displayScope');
     scopeSpan.innerHTML = scope;
+
+
+    if (scope) {
+      chrome.runtime.sendMessage({command: "startRecording", scope: scopeTLD}, function(response) {
+        //alert(response.status); // Notify the user that recording has started
+        //alert(scopeTLD);
+        document.getElementById('startRecording').disabled = true; // Disable the start button
+        document.getElementById('stopRecording').disabled = false; // Enable the stop button
+        updateRecordingBoolLocalStorage(true);
+      });
+    } else {
+      alert('Please enter a valid TLD to start recording.');
+    }
+
+
+
+
   });
 
   // screw it, idk why this isn't working. Keeping this bad code
@@ -128,17 +145,7 @@ document.getElementById('startRecording').addEventListener('click', function() {
 
 
 
-if (scopeTLD) {
-  chrome.runtime.sendMessage({command: "startRecording", scope: scopeTLD}, function(response) {
-    //alert(response.status); // Notify the user that recording has started
-    //alert(scopeTLD);
-    document.getElementById('startRecording').disabled = true; // Disable the start button
-    document.getElementById('stopRecording').disabled = false; // Enable the stop button
-    updateRecordingBoolLocalStorage(true);
-  });
-} else {
-  alert('Please enter a valid TLD to start recording.');
-}
+
 });
 
 
