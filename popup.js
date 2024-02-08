@@ -32,23 +32,31 @@ chrome.storage.local.get(['firstRunCompleted'], function(result) {
 
 document.getElementById('setScope').addEventListener('click', function() {
 
-var scopeTLD = document.getElementById('scopeTLD').value;
-if (scopeTLD) {
+var scope = document.getElementById('scopeTLD').value;
+if (scope) {
 
-  chrome.runtime.sendMessage({action: "setScope", scopeTLD: scopeTLD}, function(response) {
-    alert('Scope set to: ' + scopeTLD); // Provide feedback to the user
+
+  chrome.storage.local.set({scopeTLD: scope}, function() {
+    console.log('Scope TLD saved:', scope);
+  });
+
+  /*
+
+  // this code doesn't run because there's no response?
+  chrome.runtime.sendMessage({action: "setScope", scopeTLD: scope}, function(response) {
+    alert('Scope set to: ' + scope); // Provide feedback to the user
     // Save the scopeTLD in chrome.storage for persistence
-    chrome.storage.local.set({scopeTLD: scopeTLD}, function() {
-      console.log('Scope TLD saved:', scopeTLD);
+    chrome.storage.local.set({scopeTLD: scope}, function() {
+      console.log('Scope TLD saved:', scope);
     });
+  */
 
-
-    document.getElementById('displayScope').textContent = scopeTLD;
-    fetchData(scopeTLD); // Pass the scopeTLD to fetchData function
+    document.getElementById('displayScope').textContent = scope;
+    fetchData(scope); // Pass the scopeTLD to fetchData function
 
       document.getElementById('startRecording').disabled = false;
 
-  });
+
 } else {
   alert('Please enter a valid TLD.');
 }
@@ -110,7 +118,7 @@ document.getElementById('startRecording').addEventListener('click', function() {
     alert(scope);
     //console.log(scopeTLD);
     // update the DOM
-    const scopeSpan = document.getElementById('displayScope').value;
+    var scopeSpan = document.getElementById('displayScope');
     scopeSpan.innerHTML = scope;
   });
 

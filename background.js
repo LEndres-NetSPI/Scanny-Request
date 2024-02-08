@@ -17,6 +17,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     else if (request.command === "clearScope"){
         // set local storage? or do that on front-end
     
+    }else if (request.command === "setScope"){
+        // set local storage? or do that on front-end
+    
     } else if (request.command === "clearData") {
         clearData();
         // no need to send a response?
