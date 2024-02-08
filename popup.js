@@ -2,6 +2,12 @@ function firstTimeFunction() {
   // Your code that should only run once
   console.log("This runs only once on the extension's first run.");
   updateRecordingBoolLocalStorage(false);
+
+  chrome.storage.local.set({scopeTLD: ""}, function() {
+    // update the DOM
+    document.getElementById('displayScope').innerHTML = "none";
+  });
+
 }
 
 // Check if it's the first run
@@ -25,15 +31,19 @@ chrome.storage.local.get(['firstRunCompleted'], function(result) {
 
 
 document.getElementById('setScope').addEventListener('click', function() {
-const scopeTLD = document.getElementById('scopeTLD').value.trim();
+
+var scopeTLD = document.getElementById('scopeTLD').value;
 if (scopeTLD) {
+
   chrome.runtime.sendMessage({action: "setScope", scopeTLD: scopeTLD}, function(response) {
     alert('Scope set to: ' + scopeTLD); // Provide feedback to the user
     // Save the scopeTLD in chrome.storage for persistence
     chrome.storage.local.set({scopeTLD: scopeTLD}, function() {
       console.log('Scope TLD saved:', scopeTLD);
     });
-    document.getElementById('displayScope').textContent = 'Scope set to: ' + scopeTLD;
+
+
+    document.getElementById('displayScope').textContent = scopeTLD;
     fetchData(scopeTLD); // Pass the scopeTLD to fetchData function
 
       document.getElementById('startRecording').disabled = false;
@@ -88,11 +98,32 @@ chrome.storage.local.get('scopeTLD', function(data) {
 */
 
 document.getElementById('startRecording').addEventListener('click', function() {
-const scopeTLD = document.getElementById('scopeTLD').value.trim();
+  // this line broke the whole thing
+  // dom not being updated correctly?
+  // var vs const?
+  //var scopeTLD = document.getElementById('scopeTLD').value.trim();
+
+  // get scope from storage
+  chrome.storage.local.get('scopeTLD', function(data) {
+    //console.log(data);
+    var scope = data.scopeTLD;
+    alert(scope);
+    //console.log(scopeTLD);
+    // update the DOM
+    const scopeSpan = document.getElementById('displayScope').value;
+    scopeSpan.innerHTML = scope;
+  });
+
+  // screw it, idk why this isn't working. Keeping this bad code
+  const scopeTLD = document.getElementById('scopeTLD').value.trim();
+
+
+
 
 if (scopeTLD) {
   chrome.runtime.sendMessage({command: "startRecording", scope: scopeTLD}, function(response) {
-    alert(response.status); // Notify the user that recording has started
+    //alert(response.status); // Notify the user that recording has started
+    //alert(scopeTLD);
     document.getElementById('startRecording').disabled = true; // Disable the start button
     document.getElementById('stopRecording').disabled = false; // Enable the stop button
     updateRecordingBoolLocalStorage(true);
@@ -111,7 +142,7 @@ if (scopeTLD) {
 
 document.getElementById('stopRecording').addEventListener('click', function() {
   chrome.runtime.sendMessage({command: "stopRecording"}, function(response) {
-    alert(response.status); // Notify the user that recording has stopped
+    //alert(response.status); // Notify the user that recording has stopped
     document.getElementById('startRecording').disabled = false; // Enable the start button
     document.getElementById('stopRecording').disabled = true; // Disable the stop button
     updateRecordingBoolLocalStorage(false);
@@ -165,6 +196,40 @@ document.getElementById('clearData').addEventListener('click', function() {
 
 
 
+document.getElementById('clearScope').addEventListener('click', function() {
+  // send a message to background.js to clear the requestCounts var
+  chrome.runtime.sendMessage({command: "clearScope"}, function(response) {
+
+      const scope = document.getElementById('displayScope');
+      output.innerHTML = 'none'; // Clear previous output
+
+      // disable recording
+      
+
+
+});
+
+chrome.storage.local.set({scopeTLD: ""}, function() {
+  // update the DOM
+  document.getElementById('displayScope').innerHTML = "none";
+});
+
+/*
+chrome.runtime.sendMessage({command: "stopRecording"}, function(response) {
+  alert(response.status); // Notify the user that recording has stopped
+  document.getElementById('startRecording').disabled = false; // Enable the start button
+  document.getElementById('stopRecording').disabled = true; // Disable the stop button
+  updateRecordingBoolLocalStorage(false);
+  fetchData(); // Refresh the data display to include the recorded requests
+});
+*/
+
+});
+
+
+
+
+
 
 /*
   Listener function
@@ -206,7 +271,18 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 document.addEventListener('DOMContentLoaded', function() {
 
   // get the scope if it's already set
+  chrome.storage.local.get('scopeTLD', function(data) {
+    console.log('scopeTLD = '+ data.scopeTLD);
+    const scopeTLD = data.scopeTLD;
 
+    // update the DOM
+    if (scopeTLD == '') {
+      document.getElementById('displayScope').innerHTML = 'none';
+    }
+    else {
+      document.getElementById('displayScope').innerHTML = scopeTLD;
+    }
+  });
 
 
 
@@ -273,6 +349,8 @@ function exportData(format) {
       });
   });
 }
+
+
 
 // Function to trigger the download of the data
 function downloadData(data, type, filename) {

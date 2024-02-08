@@ -6,13 +6,17 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.command === "startRecording") {
         isRecording = true;
         recordingScope = request.scope; //new URL(request.scope); // Simplify to origin for matching scope
+        console.log('addListener, scope set to:')
         console.log(recordingScope);
         requestCounts = {}; // Reset for a new recording session
         sendResponse({status: "Recording started", scope: request.scope});
     } else if (request.command === "stopRecording") {
         isRecording = false;
         sendResponse({status: "Recording stopped"});
-
+    }
+    else if (request.command === "clearScope"){
+        // set local storage? or do that on front-end
+    
     } else if (request.command === "clearData") {
         clearData();
         // no need to send a response?
@@ -34,13 +38,23 @@ function clearData() {
 
 
 
-chrome.webRequest.onBeforeRequest.addListener(
-    function(details) {
+chrome.webRequest.onBeforeRequest.addListener(function(details) {
+        console.log('reqes');
         if (!isRecording) return; // Skip if not recording
 
         const url = new URL(details.url);
         //console.log(url.origin);
-        //console.log(recordingScope);
+        console.log('scope = ');
+
+
+
+        chrome.storage.local.get('scopeTLD', function(data) {
+            //console.log(data);
+            var scope = data.scopeTLD;
+            alert(scope);
+          });
+
+        console.log(recordingScope);
 
 
 
@@ -106,6 +120,7 @@ function updatePopup() {
 // Listen for a message from the popup to send back the captured request data
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.action == "getRequests") {
+        console.log(requestCounts);
         sendResponse(requestCounts);
     }
 });
