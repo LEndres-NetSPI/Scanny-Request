@@ -198,21 +198,27 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 });
 
 
-
-
-
+/*
+  Every time the extension is click
+*/
 
 // Automatically fetch and display data on popup load
 document.addEventListener('DOMContentLoaded', function() {
+
+  // get the scope if it's already set
+
+
+
+
   // update the start/stop buttons if the extension has been re-opened
   chrome.storage.local.get(['recordingBool'], function(result) {
       //
       if (result.recordingBool == true) {
           document.getElementById('startRecording').disabled = true; // Disable the start button
-          document.getElementById('stopRecording').enabled = true; // Enable the stop button
+          document.getElementById('stopRecording').disabled = false; // Enable the stop button
       }
       else if (result.recordingBool == false) {
-          document.getElementById('startRecording').enabled = true; // Disable the start button
+          document.getElementById('startRecording').disabled = false; // Disable the start button
           document.getElementById('stopRecording').disabled = true; // Enable the stop button
       }
 
