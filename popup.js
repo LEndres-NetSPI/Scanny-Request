@@ -70,17 +70,17 @@ if (scope) {
 function fetchData() {
 // Retrieve the saved scopeTLD from chrome.storage
 chrome.storage.local.get('scopeTLD', function(data) {
-  const scopeTLD = data.scopeTLD;
+  let scopeTLD = data.scopeTLD;
   if (scopeTLD) {
     chrome.runtime.sendMessage({action: "getRequests"}, function(response) {
-      const output = document.getElementById('output');
+      let output = document.getElementById('output');
       output.innerHTML = ''; // Clear previous output
       if (response) {
         Object.keys(response).forEach(url => {
           // Check if the URL contains the scopeTLD before adding it to the output
           if (url.includes(scopeTLD)) {
-            const methods = response[url];
-            const methodsString = Object.keys(methods).map(method => `${method}: ${methods[method]}`).join(', ');
+            let methods = response[url];
+            let methodsString = Object.keys(methods).map(method => `${method}: ${methods[method]}`).join(', ');
             output.innerHTML += `<p><b>${url}</b>: ${methodsString}</p>`;
           }
         });
@@ -108,7 +108,7 @@ chrome.storage.local.get('scopeTLD', function(data) {
 document.getElementById('startRecording').addEventListener('click', function() {
   // this line broke the whole thing
   // dom not being updated correctly?
-  // var vs const?
+  // var vs let?
   //var scopeTLD = document.getElementById('scopeTLD').value.trim();
 
   // get scope from storage
@@ -140,7 +140,7 @@ document.getElementById('startRecording').addEventListener('click', function() {
   });
 
   // screw it, idk why this isn't working. Keeping this bad code
-  const scopeTLD = document.getElementById('scopeTLD').value.trim();
+  let scopeTLD = document.getElementById('scopeTLD').value.trim();
 
 
 
@@ -200,7 +200,7 @@ document.getElementById('clearData').addEventListener('click', function() {
   // send a message to background.js to clear the requestCounts var
   chrome.runtime.sendMessage({command: "clearData"}, function(response) {
 
-      const output = document.getElementById('output');
+      let output = document.getElementById('output');
       output.innerHTML = ''; // Clear previous output
 
 
@@ -215,7 +215,7 @@ document.getElementById('clearScope').addEventListener('click', function() {
   // send a message to background.js to clear the requestCounts var
   chrome.runtime.sendMessage({command: "clearScope"}, function(response) {
 
-      const scope = document.getElementById('displayScope');
+      let scope = document.getElementById('displayScope');
       output.innerHTML = 'none'; // Clear previous output
 
       // disable recording
@@ -256,14 +256,14 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
 
       // Handle the data, e.g., by updating the DOM
-      const output = document.getElementById('output');
+      let output = document.getElementById('output');
       output.innerHTML = ''; // Clear previous output
 
 
 
       Object.keys(message.data).forEach(url => {
-          const methods = message.data[url];
-          const methodsString = Object.keys(methods).map(method => `${method}: ${methods[method]}`).join(', ');
+          let methods = message.data[url];
+          let methodsString = Object.keys(methods).map(method => `${method}: ${methods[method]}`).join(', ');
           output.innerHTML += `<p><b>${url}</b>: ${methodsString}</p>`;
       });
 
@@ -271,7 +271,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
   // clear data
   if (message.action === "clearData") {
-      const output = document.getElementById('output');
+      let output = document.getElementById('output');
       output.innerHTML = ''; // Clear previous output
   }
 
@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // get the scope if it's already set
   chrome.storage.local.get('scopeTLD', function(data) {
     console.log('scopeTLD = '+ data.scopeTLD);
-    const scopeTLD = data.scopeTLD;
+    let scopeTLD = data.scopeTLD;
 
     // update the DOM
     if (scopeTLD == '') {
@@ -337,7 +337,7 @@ document.getElementById('exportJson').addEventListener('click', function() {
 // Function to handle data export
 function exportData(format) {
   chrome.storage.local.get('scopeTLD', function(data) {
-      const scopeTLD = data.scopeTLD;
+      let scopeTLD = data.scopeTLD;
       if (!scopeTLD) {
           alert('No scope TLD set.');
           return;
@@ -354,7 +354,7 @@ function exportData(format) {
           } else if (format === 'csv') {
               dataStr = 'URL,Method,Count\n';
               Object.keys(response).forEach(url => {
-                  const methods = response[url];
+                  let methods = response[url];
                   Object.keys(methods).forEach(method => {
                       dataStr += `${url},${method},${methods[method]}\n`;
                   });
@@ -369,9 +369,9 @@ function exportData(format) {
 
 // Function to trigger the download of the data
 function downloadData(data, type, filename) {
-  const blob = new Blob([data], {type: type});
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
+  let blob = new Blob([data], {type: type});
+  let url = URL.createObjectURL(blob);
+  let link = document.createElement('a');
   link.href = url;
   link.download = filename;
   document.body.appendChild(link); // Required for Firefox

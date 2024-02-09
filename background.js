@@ -45,7 +45,7 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
         console.log('reqes');
         if (!isRecording) return; // Skip if not recording
 
-        const url = new URL(details.url);
+        let url = new URL(details.url);
         //console.log(url.origin);
         console.log('scope = ');
 
@@ -83,8 +83,8 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
         //if (url.origin !== recordingScope) return; // Skip if not within the scope
 
         // href = whole url + request params
-        const endpoint = url.href;
-        const method = details.method;
+        let endpoint = url.href;
+        let method = details.method;
 
         // Initialize or increment count
         if (!requestCounts[endpoint]) {
@@ -109,7 +109,7 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
 // Example: Function to send data to popup.js, assuming the popup is open
 function updatePopup() {
     // Check if the popup is open by querying the views
-    const views = chrome.extension.getViews({type: "popup"});
+    let views = chrome.extension.getViews({type: "popup"});
     if (views.length > 0) {
         // If the popup is open, send data to it
         chrome.runtime.sendMessage({action: "updateData", data: requestCounts});
