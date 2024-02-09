@@ -5,7 +5,7 @@ function firstTimeFunction() {
 
   chrome.storage.local.set({scopeTLD: ""}, function() {
     // update the DOM
-    document.getElementById('scopeSpan').innerHTML = "none";
+    document.getElementById('scopeSpan').innerHTML = "None";
   });
 
 }
@@ -228,7 +228,7 @@ document.getElementById('clearScope').addEventListener('click', function() {
 
   chrome.storage.local.set({scopeTLD: ""}, function() {
     // update the DOM
-    document.getElementById('scopeSpan').innerHTML = "none";
+    document.getElementById('scopeSpan').innerHTML = "None";
   });
 
 /*
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // update the DOM
     if (scopeTLD == '') {
-      document.getElementById('scopeSpan').innerHTML = 'none';
+      document.getElementById('scopeSpan').innerHTML = 'None';
     }
     else {
       document.getElementById('scopeSpan').innerHTML = scopeTLD;
