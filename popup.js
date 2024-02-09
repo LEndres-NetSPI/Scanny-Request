@@ -32,7 +32,7 @@ chrome.storage.local.get(['firstRunCompleted'], function(result) {
 
 document.getElementById('setScope').addEventListener('click', function() {
 
-var scope = document.getElementById('scopeTLD').value;
+var scope = document.getElementById('scopeInputBox').value;
 if (scope) {
 
 
@@ -109,7 +109,7 @@ document.getElementById('startRecording').addEventListener('click', function() {
   // this line broke the whole thing
   // dom not being updated correctly?
   // var vs let?
-  //var scopeTLD = document.getElementById('scopeTLD').value.trim();
+  //var scopeTLD = document.getElementById('scopeInputBox').value.trim();
 
   // get scope from storage
   chrome.storage.local.get('scopeTLD', function(data) {
@@ -142,7 +142,7 @@ document.getElementById('startRecording').addEventListener('click', function() {
   });
 
   // screw it, idk why this isn't working. Keeping this bad code
-  let scopeTLD = document.getElementById('scopeTLD').value.trim();
+  let scopeTLD = document.getElementById('scopeInputBox').value.trim();
 
 
 
