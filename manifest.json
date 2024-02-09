@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Scanny webRequest Alpha",
+  "name": "Scanny Request Alpha",
   "version": "1.0",
   "permissions": ["webRequest", "storage", "webNavigation"],
   "host_permissions": [
@@ -14,5 +14,9 @@
     "default_icon": {
       "16": "icon.png"
     }
+  },
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
   }
 }

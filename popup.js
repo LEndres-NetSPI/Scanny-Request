@@ -142,7 +142,7 @@ document.getElementById('startRecording').addEventListener('click', function() {
   });
 
   // screw it, idk why this isn't working. Keeping this bad code
-  let scopeTLD = document.getElementById('scopeInputBox').value.trim();
+  //let scopeTLD = document.getElementById('scopeInputBox').value.trim();
 
 
 
