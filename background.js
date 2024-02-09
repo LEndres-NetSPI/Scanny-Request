@@ -54,7 +54,7 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
         chrome.storage.local.get('scopeTLD', function(data) {
             //console.log(data);
             var scope = data.scopeTLD;
-            alert(scope);
+            //alert(scope);
           });
 
         console.log(recordingScope);

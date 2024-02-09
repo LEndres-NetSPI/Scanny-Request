@@ -115,14 +115,16 @@ document.getElementById('startRecording').addEventListener('click', function() {
   chrome.storage.local.get('scopeTLD', function(data) {
     //console.log(data);
     var scope = data.scopeTLD;
-    alert(scope);
+    //alert(scope);
     //console.log(scopeTLD);
-    // update the DOM
-    var scopeSpan = document.getElementById('displayScope');
-    scopeSpan.innerHTML = scope;
 
 
     if (scope) {
+
+      // update the DOM
+      var scopeSpan = document.getElementById('displayScope');
+      scopeSpan.innerHTML = scope;
+
       chrome.runtime.sendMessage({command: "startRecording", scope: scopeTLD}, function(response) {
         //alert(response.status); // Notify the user that recording has started
         //alert(scopeTLD);
@@ -216,18 +218,18 @@ document.getElementById('clearScope').addEventListener('click', function() {
   chrome.runtime.sendMessage({command: "clearScope"}, function(response) {
 
       let scope = document.getElementById('displayScope');
-      output.innerHTML = 'none'; // Clear previous output
+      //output.innerHTML = 'none'; // Clear previous output
 
       // disable recording
       
 
 
-});
+  });
 
-chrome.storage.local.set({scopeTLD: ""}, function() {
-  // update the DOM
-  document.getElementById('displayScope').innerHTML = "none";
-});
+  chrome.storage.local.set({scopeTLD: ""}, function() {
+    // update the DOM
+    document.getElementById('displayScope').innerHTML = "none";
+  });
 
 /*
 chrome.runtime.sendMessage({command: "stopRecording"}, function(response) {
