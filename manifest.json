@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Scanny webRequest Beta",
+  "name": "Scanny webRequest Alpha",
   "version": "1.0",
   "permissions": ["webRequest", "storage", "webNavigation"],
   "host_permissions": [

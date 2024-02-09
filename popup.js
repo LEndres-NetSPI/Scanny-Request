@@ -5,7 +5,7 @@ function firstTimeFunction() {
 
   chrome.storage.local.set({scopeTLD: ""}, function() {
     // update the DOM
-    document.getElementById('displayScope').innerHTML = "none";
+    document.getElementById('scopeSpan').innerHTML = "none";
   });
 
 }
@@ -51,7 +51,7 @@ if (scope) {
     });
   */
 
-    document.getElementById('displayScope').textContent = scope;
+    document.getElementById('scopeSpan').textContent = scope;
     fetchData(scope); // Pass the scopeTLD to fetchData function
 
       document.getElementById('startRecording').disabled = false;
@@ -122,7 +122,7 @@ document.getElementById('startRecording').addEventListener('click', function() {
     if (scope) {
 
       // update the DOM
-      var scopeSpan = document.getElementById('displayScope');
+      var scopeSpan = document.getElementById('scopeSpan');
       scopeSpan.innerHTML = scope;
 
       chrome.runtime.sendMessage({command: "startRecording", scope: scopeTLD}, function(response) {
@@ -217,7 +217,7 @@ document.getElementById('clearScope').addEventListener('click', function() {
   // send a message to background.js to clear the requestCounts var
   chrome.runtime.sendMessage({command: "clearScope"}, function(response) {
 
-      let scope = document.getElementById('displayScope');
+      let scope = document.getElementById('scopeSpan');
       //output.innerHTML = 'none'; // Clear previous output
 
       // disable recording
@@ -228,7 +228,7 @@ document.getElementById('clearScope').addEventListener('click', function() {
 
   chrome.storage.local.set({scopeTLD: ""}, function() {
     // update the DOM
-    document.getElementById('displayScope').innerHTML = "none";
+    document.getElementById('scopeSpan').innerHTML = "none";
   });
 
 /*
@@ -294,10 +294,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // update the DOM
     if (scopeTLD == '') {
-      document.getElementById('displayScope').innerHTML = 'none';
+      document.getElementById('scopeSpan').innerHTML = 'none';
     }
     else {
-      document.getElementById('displayScope').innerHTML = scopeTLD;
+      document.getElementById('scopeSpan').innerHTML = scopeTLD;
     }
   });
 
