@@ -110,28 +110,28 @@ document.getElementById('startRecording').addEventListener('click', function() {
   // dom not being updated correctly?
   // var vs let?
   //var scopeTLD = document.getElementById('scopeInputBox').value.trim();
+  //alert(scope);
 
   // get scope from storage
   chrome.storage.local.get('scopeTLD', function(data) {
     //console.log(data);
-    var scope = data.scopeTLD;
+    var storage_scope = data.scopeTLD;
     //alert(scope);
     //console.log(scopeTLD);
 
 
-    if (scope) {
+    if (storage_scope) {
+        // update the DOM
+        var scopeSpan = storage_scope //document.getElementById('scopeSpan');
+        scopeSpan.innerHTML = storage_scope;
 
-      // update the DOM
-      var scopeSpan = document.getElementById('scopeSpan');
-      scopeSpan.innerHTML = scope;
-
-      chrome.runtime.sendMessage({command: "startRecording", scope: scopeTLD}, function(response) {
-        //alert(response.status); // Notify the user that recording has started
-        //alert(scopeTLD);
-        document.getElementById('startRecording').disabled = true; // Disable the start button
-        document.getElementById('stopRecording').disabled = false; // Enable the stop button
-        updateRecordingBoolLocalStorage(true);
-      });
+        chrome.runtime.sendMessage({command: "startRecording", scope: storage_scope}, function(response) {
+            //alert(response.status); // Notify the user that recording has started
+            //alert(scopeTLD);
+            document.getElementById('startRecording').disabled = true; // Disable the start button
+            document.getElementById('stopRecording').disabled = false; // Enable the stop button
+            updateRecordingBoolLocalStorage(true);
+        });
     } else {
       alert('Please enter a valid TLD to start recording.');
     }
