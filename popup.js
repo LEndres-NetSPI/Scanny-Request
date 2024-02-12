@@ -249,7 +249,7 @@ chrome.runtime.sendMessage({command: "stopRecording"}, function(response) {
 
 
 /*
-  Listener function
+  Listener function - used for communication between background.js and popup,js
 */
 
 

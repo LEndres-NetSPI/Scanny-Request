@@ -2,8 +2,14 @@ let isRecording = false;
 let recordingScope = '';
 let requestCounts = {}; // Stores counts by endpoint and method
 
+
+/*
+    Main communication function function for sending messages
+    between background.js and popup.js
+*/
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.command === "startRecording") {
+    if (request.command === "startRecording"){
         isRecording = true;
         recordingScope = request.scope; //new URL(request.scope); // Simplify to origin for matching scope
         console.log('addListener, scope set to:')
@@ -39,12 +45,15 @@ function clearData() {
 }
 
 
-
+/*
+    Core of the application - every time the current web page requests
+    a new site, this function runs.
+*/
 
 chrome.webRequest.onBeforeRequest.addListener(function(details) {
-        console.log('reqes');
-        if (!isRecording) return; // Skip if not recording
-
+    // If recording is not enabled, return
+    if (!isRecording) return;
+    
         let url = new URL(details.url);
         //console.log(url.origin);
         console.log('scope = ');
