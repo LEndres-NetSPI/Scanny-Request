@@ -53,7 +53,7 @@ function clearData() {
 chrome.webRequest.onBeforeRequest.addListener(function(details) {
     // If recording is not enabled, return
     if (!isRecording) return;
-    
+
         let url = new URL(details.url);
         //console.log(url.origin);
         console.log('scope = ');
@@ -89,8 +89,6 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
 
 
 
-        //if (url.origin !== recordingScope) return; // Skip if not within the scope
-
         // href = whole url + request params
         let endpoint = url.href;
         let method = details.method;
@@ -105,7 +103,7 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
             requestCounts[endpoint][method]++;
         }
 
-        console.log(requestCounts);
+        //console.log(requestCounts);
 
     },
     {urls: ["<all_urls>"]},

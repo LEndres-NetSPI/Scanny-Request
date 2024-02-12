@@ -261,6 +261,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       let output = document.getElementById('output');
       output.innerHTML = ''; // Clear previous output
 
+      console.log(message.data);
+
 
 
       Object.keys(message.data).forEach(url => {
