@@ -325,6 +325,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+// Domain Validation Function
+function domainValidation(url) {
+  const urlRegex = /^(((http|https):\/\/|)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}(:[0-9]{1,5})?(\/.*)?)$/;
+  return urlRegex.test(url);
+}
+
+
+
+// Add click event listeners for export buttons
+document.getElementById('submitMultipleScopes').addEventListener('click', function() {
+  // parseScopes  
+  console.log( document.getElementById('scopesTextarea').value );
+
+  // process each scope TLD
+  scopes = document.getElementById('scopesTextarea').value;
+
+  // Split the string by the newline character to get an array of values
+  var scopes = scopes.split('\n');
+
+  // Now, 'scopes' is an array where each element is a value separated by a newline in the original textarea
+  console.log(scopes); // This will log the array to the console
+
+  scopes.forEach(function(item) {
+    var validDomain = domainValidation(item);
+
+    if( validDomain == false){
+      alert('`'+item+'` is not a valid domain, please revise');
+      // exit the function
+      return false;
+    }
+
+
+  });
+
+
+});
+
+
 
 
 

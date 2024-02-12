@@ -103,7 +103,7 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
             requestCounts[endpoint][method]++;
         }
 
-        //console.log(requestCounts);
+        console.log(requestCounts);
 
     },
     {urls: ["<all_urls>"]},
